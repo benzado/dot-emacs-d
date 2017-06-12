@@ -17,12 +17,6 @@
 
 (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
 
-;; You used to load plan.org on startup, but you thought that might
-;; have been interfering with `emacsclient` in some situations. Also,
-;; maybe it would be better to depend on the Agenda more?
-
-;;(setq initial-buffer-choice (expand-file-name "plan.org")))
-
 ;; Add a timestamp when closing items
 
 (setq org-log-done 'time)
@@ -115,5 +109,14 @@
   (interactive)
   (my/org-copy-recurring "monthly" "This Month")
   (my/org-set-deadlines))
+
+;; Load plan.org (your main file) into a buffer; you need to do this
+;; AFTER setting options like `org-todo-keywords` otherwise those
+;; options won't be picked up. You used to load it on startup (via
+;; `initial-buffer-choice`) but you thought it might have been
+;; interfering with `emacsclient` in some situations. Besides, maybe
+;; it will be better to depend on Agenda Mode more?
+
+(find-file-noselect (expand-file-name "plan.org" org-directory))
 
 (provide 'init-org-mode)
