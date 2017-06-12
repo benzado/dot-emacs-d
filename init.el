@@ -31,10 +31,6 @@
 
 (require 'epa-file) ;; Gnu Privacy Guard
 
-;; Editor Preferences
-
-;(setq column-number-mode t) ;; show column number along with line number
-
 ;; Load the customizations
 
 (load custom-file)
