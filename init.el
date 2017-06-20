@@ -25,6 +25,7 @@
 (require 'init-declutter-filesystem)
 (require 'init-org-mode)
 (require 'init-git)
+(require 'init-simplenote)
 
 (when *is-a-mac*
   (require 'init-macintosh))
