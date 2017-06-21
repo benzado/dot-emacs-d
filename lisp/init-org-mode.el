@@ -15,11 +15,17 @@
 
 (setq org-agenda-files (list org-directory))
 
+;; Set the target file for notes
+
 (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
 
 ;; Add a timestamp when closing items
 
 (setq org-log-done 'time)
+
+;; Show all headlines by default
+
+(setq org-startup-folded 'content)
 
 ;; Where are we allowed to refile items?
 
