@@ -10,7 +10,7 @@
 
 ;; Add ~/.emacs.d/lisp to the load-path
 
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (locate-user-emacs-file "lisp"))
 
 ;; Define a constant to indicate we're on a Mac
 
@@ -19,7 +19,7 @@
 ;; Direct the interactive 'customize' interface to make changes to a
 ;; separate file (and not mess around with this one).
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq custom-file (locate-user-emacs-file "custom.el"))
 
 (require 'init-elpa) ; calls (package-initialize)
 (require 'init-declutter-filesystem)
