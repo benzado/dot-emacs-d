@@ -2,6 +2,13 @@
 
 (setq locate-command "mdfind")
 
+;; Use GNU coreutils, if installed.
+
+(let ((gnubin-directory "/opt/local/libexec/gnubin"))
+  (when (file-accessible-directory-p gnubin-directory)
+    (message "Adding '%s' to exec-path." gnubin-directory)
+    (add-to-list 'exec-path gnubin-directory)))
+
 ;; Update Terminal.app's title bar depending on the file being edited.
 ;; The path should be URI-escaped, hence `url-hexify-string`.
 ;; See /etc/bashrc_Apple_Terminal for more.
