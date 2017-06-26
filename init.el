@@ -26,6 +26,7 @@
 (require 'init-org-mode)
 (require 'init-git)
 (require 'init-simplenote)
+(require 'init-misc)
 
 (when *is-a-mac*
   (require 'init-macintosh))
