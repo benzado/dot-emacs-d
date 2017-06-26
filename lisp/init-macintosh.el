@@ -17,4 +17,45 @@
 
 (advice-add 'select-window :after 'my/update-mac-terminal-title-for-window)
 
+;; Make Cmd-W work like it does in browsers and other apps that
+;; support multiple tabs: it closes the current Emacs window (like C-x
+;; 0) unless it is the sole window, in which case it closes the frame.
+
+(defun my/delete-selected-window-or-frame ()
+  "If a frame contains multiple windows, delete the selected
+window, otherwise, delete the entire frame."
+  (interactive)
+  (if (> (count-windows) 1)
+      (delete-window)
+    (delete-frame)))
+
+(global-set-key (kbd "s-w") #'my/delete-selected-window-or-frame)
+
+;; Make Cmd-<Arrow> do what it usually does.
+
+(global-set-key (kbd "<s-up>")    #'beginning-of-buffer)
+(global-set-key (kbd "<s-down>")  #'end-of-buffer)
+(global-set-key (kbd "<s-left>")  #'move-beginning-of-line)
+(global-set-key (kbd "<s-right>") #'move-end-of-line)
+
+;; Make Alt-Up/Down skip over paragraphs.
+
+(global-set-key (kbd "<M-up>")   #'backward-paragraph)
+(global-set-key (kbd "<M-down>") #'forward-paragraph)
+
+;; Make Cmd-Plus/Minus zoom text.
+
+(global-set-key (kbd "s-+") #'text-scale-increase)
+(global-set-key (kbd "s--") #'text-scale-decrease)
+
+;; Out of the box...
+;; - Cmd-Z already does undo
+;; - Cmd-F already does isearch
+;; - Alt-Delete already deletes a word
+
+;; Don't use the right alt/option key as a meta key, so it can still
+;; be used to type accented characters.
+
+(setq ns-right-alternate-modifier nil)
+
 (provide 'init-macintosh)
