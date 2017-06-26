@@ -1,9 +1,9 @@
 ;; Use the standard key bindings
 
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c b") #'org-iswitchb)
 
 ;; You keep your .org files in Dropbox, for now...
 
@@ -36,23 +36,27 @@
 ;; easily mark tasks that you plan to do in the near future (today).
 
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "|" "DONE")))
+      '((sequence "TODO" "WAIT" "NEXT" "|" "DONE")))
 
 (setq org-todo-keyword-faces
-      '(("NEXT" . org-warning) ; NEXT should pop!
-	("TODO" . "darkred")
+      '(("TODO" . "darkred")
+        ("WAIT" . "darkblue")
+        ("NEXT" . org-warning) ; NEXT should pop!
 	("DONE" . "darkgreen")))
 
 ;; Since you're using NEXT to identify tasks you plan to handle next,
-;; let's define a custom command to quickly view them all.
+;; let's define a custom command to quickly view them all. (And do the
+;; same for WAIT items, too.)
 
 (setq org-agenda-custom-commands
-      `(("x" "Ne[x]t actions" tags "/NEXT")))
+      `(("x" "Ne[x]t actions" tags "/NEXT")
+        ("w" "What are you [w]aiting for?" tags "/WAIT")))
 
 ;; Here's a custom function (courtesy https://stackoverflow.com/a/27043756)
 ;; that automagically moves all DONE items to the file's archive file.
 
 (defun my/org-archive-done-tasks ()
+  "Automagically move all DONE items to the archive."
   (interactive)
   (org-map-entries
    (lambda ()
@@ -66,6 +70,7 @@
 ;; https://emacs.stackexchange.com/q/8045
 
 (defun my/org-refile-to (file-name headline)
+  "Refile the headline at the point to the specified FILE-NAME and HEADLINE."
   (org-refile nil nil (list
 		       headline
 		       file-name
@@ -73,10 +78,9 @@
 		       (marker-position
 			(org-find-olp (list file-name headline))))))
 
-;; Here's a function to copy items from the recurring template file to
-;; the plan file.
-
 (defun my/org-copy-recurring (template-tag target-headline)
+  "Copy items with TEMPLATE-TAG from the recurring.org template file to
+TARGET-HEADLINE in the plan.org file."
   (let ((template-file-name (expand-file-name "org-templates/recurring.org"
 					      org-directory))
 	(target-file-name (expand-file-name "plan.org" org-directory))
@@ -86,10 +90,10 @@
      (concat template-tag "/TODO")
      (list template-file-name))))
 
-;; Finds TODO items with a deadline_day property, and sets a DEADLINE
-;; for that day in the current year and month.
 
 (defun my/org-set-deadlines ()
+  "Find TODO items with a `deadline_day` property, and set a DEADLINE for that
+day in the current year and month."
   (let ((yyyy-mm- (format-time-string "%Y-%m-")))
     (org-map-entries
      (lambda ()
@@ -101,17 +105,18 @@
      "deadline_day<>\"\""
      (list (expand-file-name "plan.org" org-directory)))))
 
-;; Here are functions to copy the daily/weekly/monthly tasks into the plan.
-
 (defun my/org-copy-daily ()
+  "Copy daily recurring tasks into plan.org."
   (interactive)
   (my/org-copy-recurring "daily" "Today"))
 
 (defun my/org-copy-weekly ()
+  "Copy weekly recurring tasks into plan.org."
   (interactive)
   (my/org-copy-recurring "weekly" "This Week"))
 
 (defun my/org-copy-monthly ()
+  "Copy monthly recurring tasks into plan.org, setting deadlines as needed."
   (interactive)
   (my/org-copy-recurring "monthly" "This Month")
   (my/org-set-deadlines))
