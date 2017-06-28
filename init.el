@@ -26,6 +26,7 @@
 (require 'init-declutter-filesystem)
 (require 'init-org-mode)
 (require 'init-git)
+(require 'init-twitter)
 (require 'init-simplenote)
 (require 'init-misc)
 
