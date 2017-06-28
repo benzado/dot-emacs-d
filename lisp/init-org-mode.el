@@ -42,7 +42,7 @@
 ;; easily mark tasks that you plan to do in the near future (today).
 
 (setq org-todo-keywords
-      '((sequence "TODO" "WAIT" "NEXT" "|" "DONE")))
+      '((sequence "WAIT" "TODO" "NEXT" "|" "DONE")))
 
 (setq org-todo-keyword-faces
       '(("TODO" . "darkred")
