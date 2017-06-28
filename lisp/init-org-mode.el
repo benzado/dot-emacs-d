@@ -23,9 +23,15 @@
 
 (setq org-log-done 'time)
 
-;; Show all headlines by default
+;; On startup, display the agenda for the current week instead of the
+;; default splash screen.
 
-(setq org-startup-folded 'content)
+(setq inhibit-splash-screen t)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (let ((org-agenda-window-setup 'current-window))
+              (org-agenda-list))))
 
 ;; Where are we allowed to refile items?
 
@@ -120,14 +126,5 @@ day in the current year and month."
   (interactive)
   (my/org-copy-recurring "monthly" "This Month")
   (my/org-set-deadlines))
-
-;; Load plan.org (your main file) into a buffer; you need to do this
-;; AFTER setting options like `org-todo-keywords` otherwise those
-;; options won't be picked up. You used to load it on startup (via
-;; `initial-buffer-choice`) but you thought it might have been
-;; interfering with `emacsclient` in some situations. Besides, maybe
-;; it will be better to depend on Agenda Mode more?
-
-(find-file-noselect (expand-file-name "plan.org" org-directory))
 
 (provide 'init-org-mode)
