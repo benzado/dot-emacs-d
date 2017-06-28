@@ -22,6 +22,7 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
 (require 'init-elpa) ; calls (package-initialize)
+(require 'init-sendmail)
 (require 'init-declutter-filesystem)
 (require 'init-org-mode)
 (require 'init-git)
