@@ -7,6 +7,14 @@
 (setq user-full-name "Benjamin Ragheb"
       user-mail-address "ben@benzado.com")
 
+;; Save a copy of outgoing email
+
+(setq message-default-headers "FCC: ~/sent-from-emacs.mbox")
+
+;; If it's good enough for iPhone...
+
+(setq message-signature "Sent from Emacs")
+
 ;; Use FastMail's SMTP server. The login and password are stored in
 ;; ~/.authinfo.gpg (encrypted, because I'm no dummy).
 
