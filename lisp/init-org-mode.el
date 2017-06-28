@@ -1,3 +1,8 @@
+;; -*- lexical-binding: t; -*-
+
+(require 'org)
+(require 'org-agenda)
+
 ;; Use the standard key bindings
 
 (global-set-key (kbd "C-c l") #'org-store-link)
@@ -96,20 +101,33 @@ TARGET-HEADLINE in the plan.org file."
      (concat template-tag "/TODO")
      (list template-file-name))))
 
+(defun my/org-consume-property (property-name scope func)
+  "Call FUNC at each headline with a value for PROPERTY-NAME in
+SCOPE. After FUNC is called, the property is removed and the
+properties drawer will also be removed if it is empty."
+  (org-map-entries
+   (lambda ()
+     (let ((property-value (org-entry-get (point) property-name)))
+       (funcall func property-value)
+       (org-entry-delete nil property-name)
+       (org-remove-empty-drawer-at (point))))
+   (concat property-name "<>\"\"")
+   scope))
 
-(defun my/org-set-deadlines ()
-  "Find TODO items with a `deadline_day` property, and set a DEADLINE for that
-day in the current year and month."
-  (let ((yyyy-mm- (format-time-string "%Y-%m-")))
-    (org-map-entries
-     (lambda ()
-       (let* ((deadline-day (org-entry-get (point) "deadline_day"))
-	      (date-string (concat yyyy-mm- deadline-day)))
-	 (org-deadline nil date-string)
-	 (org-delete-property "deadline_day" "PROPERTIES")
-	 (setq org-map-continue-from (outline-next-heading))))
-     "deadline_day<>\"\""
-     (list (expand-file-name "plan.org" org-directory)))))
+(defun my/org-set-dates ()
+  "Find TODO items with a `deadline_day` or `scheduled_day`
+property, and set a DEADLINE or SCHEDULED date on that day in the
+current year and month."
+  (let ((yyyy-mm- (format-time-string "%Y-%m-"))
+        (file-list (list (expand-file-name "plan.org" org-directory))))
+    (my/org-consume-property "deadline_day"
+                             file-list
+                             (lambda (day)
+                               (org-deadline nil (concat yyyy-mm- day))))
+    (my/org-consume-property "scheduled_day"
+                             file-list
+                             (lambda (day)
+                               (org-schedule nil (concat yyyy-mm- day))))))
 
 (defun my/org-copy-daily ()
   "Copy daily recurring tasks into plan.org."
@@ -125,6 +143,6 @@ day in the current year and month."
   "Copy monthly recurring tasks into plan.org, setting deadlines as needed."
   (interactive)
   (my/org-copy-recurring "monthly" "This Month")
-  (my/org-set-deadlines))
+  (my/org-set-dates))
 
 (provide 'init-org-mode)
