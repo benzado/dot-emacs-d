@@ -41,4 +41,5 @@
 
 ;; This is what enables `emacsclient` to be used by git, etc.
 
-(server-start)
+(when window-system
+  (server-start))
