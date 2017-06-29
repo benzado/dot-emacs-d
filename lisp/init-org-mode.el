@@ -2,6 +2,7 @@
 
 (require 'org)
 (require 'org-agenda)
+(require 'org-mobile)
 
 ;; Use the standard key bindings
 
@@ -10,9 +11,39 @@
 (global-set-key (kbd "C-c c") #'org-capture)
 (global-set-key (kbd "C-c b") #'org-iswitchb)
 
-;; You keep your .org files in Dropbox, for now...
+;; Keep your org files in a dedicated directory
 
-(setq org-directory (expand-file-name "~/Dropbox/Documents"))
+(setq org-directory (expand-file-name "~/org"))
+
+;; MobileOrg: Org Mode on the go!
+
+(setq org-mobile-directory (expand-file-name "~/Dropbox/Apps/MobileOrg"))
+
+(setq org-mobile-inbox-for-pull (expand-file-name "inbox.org" org-directory))
+
+(setq org-mobile-force-id-on-agenda-items nil) ; I don't like the
+                                               ; default behavior of
+                                               ; adding a PROPERTIES
+                                               ; drawer to *every*
+                                               ; item, but I reserve
+                                               ; the right to change
+                                               ; my mind if
+                                               ; match-by-title leads
+                                               ; to problems down the
+                                               ; road...
+
+;; If a file named .mobileorg-password exists in the org-directory, enable
+;; encryption and use the contents of that file as the password.
+
+(let ((password-file (expand-file-name ".mobileorg-password" org-directory)))
+  (if (file-readable-p password-file)
+      (progn
+        (setq org-mobile-use-encryption t)
+        (setq org-mobile-encryption-password
+              (with-temp-buffer
+                (insert-file-contents-literally password-file)
+                (buffer-substring-no-properties (point-min) (point-max)))))
+    (message "Can't find MobileOrg password at %s" password-file)))
 
 ;; All .org files in the org-directory will be part of the Agenda. You
 ;; should consider limiting this to a fixed set of files (e.g., inbox,
