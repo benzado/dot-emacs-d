@@ -1,55 +1,17 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'org)
-(require 'org-agenda)
-(require 'org-mobile)
 
 ;; Use the standard key bindings
 
-(global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
 (global-set-key (kbd "C-c b") #'org-iswitchb)
+(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c l") #'org-store-link)
 
 ;; Keep your org files in a dedicated directory
 
 (setq org-directory (expand-file-name "~/org"))
-
-;; MobileOrg: Org Mode on the go!
-
-(setq org-mobile-directory (expand-file-name "~/Dropbox/Apps/MobileOrg"))
-
-(setq org-mobile-inbox-for-pull (expand-file-name "inbox.org" org-directory))
-
-(setq org-mobile-force-id-on-agenda-items nil) ; I don't like the
-                                               ; default behavior of
-                                               ; adding a PROPERTIES
-                                               ; drawer to *every*
-                                               ; item, but I reserve
-                                               ; the right to change
-                                               ; my mind if
-                                               ; match-by-title leads
-                                               ; to problems down the
-                                               ; road...
-
-;; If a file named .mobileorg-password exists in the org-directory, enable
-;; encryption and use the contents of that file as the password.
-
-(let ((password-file (expand-file-name ".mobileorg-password" org-directory)))
-  (if (file-readable-p password-file)
-      (progn
-        (setq org-mobile-use-encryption t)
-        (setq org-mobile-encryption-password
-              (with-temp-buffer
-                (insert-file-contents-literally password-file)
-                (buffer-substring-no-properties (point-min) (point-max)))))
-    (message "Can't find MobileOrg password at %s" password-file)))
-
-;; All .org files in the org-directory will be part of the Agenda. You
-;; should consider limiting this to a fixed set of files (e.g., inbox,
-;; plan, someday, calendar...).
-
-(setq org-agenda-files (list org-directory))
 
 ;; Set the target file for notes
 
@@ -58,16 +20,6 @@
 ;; Add a timestamp when closing items
 
 (setq org-log-done 'time)
-
-;; On startup, display the agenda for the current week instead of the
-;; default splash screen.
-
-(setq inhibit-splash-screen t)
-
-(add-hook 'after-init-hook
-          (lambda ()
-            (let ((org-agenda-window-setup 'current-window))
-              (org-agenda-list))))
 
 ;; Where are we allowed to refile items?
 
@@ -85,14 +37,6 @@
         ("WAIT" . "darkblue")
         ("NEXT" . org-warning) ; NEXT should pop!
 	("DONE" . "darkgreen")))
-
-;; Since you're using NEXT to identify tasks you plan to handle next,
-;; let's define a custom command to quickly view them all. (And do the
-;; same for WAIT items, too.)
-
-(setq org-agenda-custom-commands
-      `(("x" "Ne[x]t actions" tags "/NEXT")
-        ("w" "What are you [w]aiting for?" tags "/WAIT")))
 
 ;; Here's a custom function (courtesy https://stackoverflow.com/a/27043756)
 ;; that automagically moves all DONE items to the file's archive file.
@@ -176,4 +120,4 @@ current year and month."
   (my/org-copy-recurring "monthly" "This Month")
   (my/org-set-dates))
 
-(provide 'init-org-mode)
+(provide 'init-org)
