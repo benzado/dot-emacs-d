@@ -13,6 +13,14 @@
 
 (setq org-directory (expand-file-name "~/org"))
 
+(defvar my/org-plan-file
+  (expand-file-name "plan.org" org-directory)
+  "My main Org file.")
+
+(defvar my/org-template-directory
+  (expand-file-name "templates" org-directory)
+  "Directory with my Org template files.")
+
 ;; Set the target file for notes
 
 (setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
@@ -67,14 +75,11 @@
 (defun my/org-copy-recurring (template-tag target-headline)
   "Copy items with TEMPLATE-TAG from the recurring.org template file to
 TARGET-HEADLINE in the plan.org file."
-  (let ((template-file-name (expand-file-name "org-templates/recurring.org"
-					      org-directory))
-	(target-file-name (expand-file-name "plan.org" org-directory))
-	(org-refile-keep t))
+  (let ((org-refile-keep t))
     (org-map-entries
-     (lambda () (my/org-refile-to target-file-name target-headline))
+     (lambda () (my/org-refile-to my/org-plan-file target-headline))
      (concat template-tag "/TODO")
-     (list template-file-name))))
+     (list (expand-file-name "recurring.org" my/org-template-directory)))))
 
 (defun my/org-consume-property (property-name scope func)
   "Call FUNC at each headline with a value for PROPERTY-NAME in
@@ -94,7 +99,7 @@ properties drawer will also be removed if it is empty."
 property, and set a DEADLINE or SCHEDULED date on that day in the
 current year and month."
   (let ((yyyy-mm- (format-time-string "%Y-%m-"))
-        (file-list (list (expand-file-name "plan.org" org-directory))))
+        (file-list (list my/org-plan-file)))
     (my/org-consume-property "deadline_day"
                              file-list
                              (lambda (day)
