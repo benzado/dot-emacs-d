@@ -14,17 +14,29 @@
 ;; same for WAIT items, too.)
 
 (setq org-agenda-custom-commands
-      `(("x" "Ne[x]t actions" tags "/NEXT")
-        ("w" "What are you [w]aiting for?" tags "/WAIT")))
+      `(("x" "Ne[x]t actions, agenda, and waiting-for" ((todo "NEXT")
+                                                        (agenda)
+                                                        (todo "WAIT")))
+        ("X" "What's ne[X]t?" ((todo "NEXT")))
+        ("W" "What are you [W]aiting for?" ((todo "WAIT")))))
+
+;; When summoning the Agenda...
+
+(setq org-agenda-window-setup 'current-window) ; ...replace the
+                                               ; current window
+                                               ; instead of opening a
+                                               ; new one that takes up
+                                               ; most of the frame...
+
+(setq org-agenda-start-day "-1d") ; ...start with yesterday...
+
+(setq org-agenda-span 8) ; ...and show eight days.
 
 ;; On startup, display the agenda for the current week instead of the
 ;; default splash screen.
 
 (setq inhibit-splash-screen t)
 
-(add-hook 'after-init-hook
-          (lambda ()
-            (let ((org-agenda-window-setup 'current-window))
-              (org-agenda-list))))
+(add-hook 'after-init-hook #'org-agenda-list)
 
 (provide 'init-org-agenda)
