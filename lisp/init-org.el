@@ -55,12 +55,14 @@
 (defun my/org-archive-done-tasks ()
   "Automagically move all DONE items to the archive."
   (interactive)
-  (org-map-entries
-   (lambda ()
-     (org-archive-subtree)
-     (setq org-map-continue-from (outline-previous-heading)))
-   "/DONE"
-   'file))
+  (message "Archived %d DONE tasks."
+           (length
+            (org-map-entries
+             (lambda ()
+               (org-archive-subtree)
+               (setq org-map-continue-from (outline-previous-heading)))
+             "/DONE"
+             'file))))
 
 ;; Here's a function to refile to a specified file and headline. The
 ;; third parameter to org-refile is a weird, poorly documented form.
