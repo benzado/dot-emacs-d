@@ -33,4 +33,9 @@
                 (buffer-substring-no-properties (point-min) (point-max)))))
     (message "Can't find MobileOrg password at %s" password-file)))
 
+;; Automatically pull after init and push before quit
+
+(add-hook 'after-init-hook #'org-mobile-pull)
+(add-hook 'kill-emacs-hook #'org-mobile-push)
+
 (provide 'init-org-mobile)
