@@ -21,10 +21,6 @@
   (expand-file-name "templates" org-directory)
   "Directory with my Org template files.")
 
-;; Set the target file for notes
-
-(setq org-default-notes-file (expand-file-name "inbox.org" org-directory))
-
 ;; Add a timestamp when closing items
 
 (setq org-log-done 'time)

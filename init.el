@@ -26,6 +26,7 @@
 (require 'init-declutter-filesystem)
 (require 'init-org)
 (require 'init-org-agenda)
+(require 'init-org-capture)
 (require 'init-org-mobile)
 (require 'init-magit)
 (require 'init-twitter)
