@@ -31,6 +31,7 @@
 (require 'init-twitter)
 (require 'init-simplenote)
 (require 'init-misc)
+(require 'init-neotree)
 
 (when *is-a-mac*
   (require 'init-macintosh))
