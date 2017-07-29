@@ -55,6 +55,10 @@ window, otherwise, delete the entire frame."
 (global-set-key (kbd "s-+") #'text-scale-increase)
 (global-set-key (kbd "s--") #'text-scale-decrease)
 
+;; Make Cmd-/ toggle comment on a line in programming mods
+
+(define-key prog-mode-map (kbd "s-/") #'comment-line)
+
 ;; Out of the box...
 ;; - Cmd-Z already does undo
 ;; - Cmd-F already does isearch
