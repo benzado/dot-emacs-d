@@ -3,7 +3,9 @@
 
 (require 'package)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/")
+             'append)
 
 (setq package-enable-at-startup nil) ; don't autoload
 

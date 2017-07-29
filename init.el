@@ -27,7 +27,7 @@
 (require 'init-org)
 (require 'init-org-agenda)
 (require 'init-org-mobile)
-(require 'init-git)
+(require 'init-magit)
 (require 'init-twitter)
 (require 'init-simplenote)
 (require 'init-misc)
