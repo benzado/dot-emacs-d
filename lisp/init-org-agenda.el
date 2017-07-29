@@ -3,11 +3,15 @@
 (require 'init-org)
 (require 'org-agenda)
 
-;; All .org files in the org-directory will be part of the Agenda. You
-;; should consider limiting this to a fixed set of files (e.g., inbox,
-;; plan, someday, calendar...).
+;; Limit the Agenda to files where something is definitely
+;; happening. I used to include the whole org-directory, but that
+;; resulted in Buffer Clutter™.
 
-(setq org-agenda-files (list org-directory))
+(setq org-agenda-files
+      (let ((default-directory org-directory))
+        (list (expand-file-name "plan.org")
+              (expand-file-name "calendar.org")
+              (expand-file-name "inbox.org"))))
 
 ;; Since you're using NEXT to identify tasks you plan to handle next,
 ;; let's define a custom command to quickly view them all. (And do the

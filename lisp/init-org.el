@@ -31,8 +31,11 @@
 
 ;; Where are we allowed to refile items?
 
-(setq org-refile-targets '((nil :maxlevel . 2) ;; nil = current buffer
-			   (org-agenda-files :level . 1)))
+(defun my/org-refile-target-file-names ()
+  (directory-files org-directory :full-names "\\.org$" :no-sort))
+
+(setq org-refile-targets '((nil :maxlevel . 3) ;; nil = current buffer
+			   (my/org-refile-target-file-names :level . 1)))
 
 ;; Along with TODO and DONE, define a NEXT state, so that you can
 ;; easily mark tasks that you plan to do in the near future (today).
