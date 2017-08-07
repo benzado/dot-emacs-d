@@ -27,4 +27,14 @@
          :empty-lines 1
          :kill-buffer)))
 
+;; Bind keys for quick access to some templates
+
+(global-set-key (kbd "C-c j") (lambda ()
+                                (interactive)
+                                (org-capture nil "j")))
+
+(global-set-key (kbd "C-c t") (lambda ()
+                                (interactive)
+                                (org-capture nil "t")))
+
 (provide 'init-org-capture)

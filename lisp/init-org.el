@@ -2,13 +2,6 @@
 
 (require 'org)
 
-;; Use the standard key bindings
-
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c b") #'org-iswitchb)
-(global-set-key (kbd "C-c c") #'org-capture)
-(global-set-key (kbd "C-c l") #'org-store-link)
-
 ;; Keep your org files in a dedicated directory
 
 (setq org-directory (expand-file-name "~/org"))
@@ -20,6 +13,31 @@
 (defvar my/org-template-directory
   (expand-file-name "templates" org-directory)
   "Directory with my Org template files.")
+
+;; Use the standard key bindings
+
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c b") #'org-iswitchb)
+(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c l") #'org-store-link)
+
+;; Bind C-c o _ to open selected org files
+
+(let ((default-directory org-directory))
+  (mapc (lambda (x)
+          (let ((key-sequence (concat "C-c o " (car x)))
+                (file (expand-file-name (cdr x))))
+            (global-set-key (kbd key-sequence)
+                            (lambda ()
+                              (interactive)
+                              (find-file file)))))
+        '(("c" . "calendar.org")
+          ("i" . "inbox.org")
+          ("p" . "plan.org")
+          ("q" . "quotations.org")
+          ("r" . "reference.org")
+          ("s" . "someday.org")
+          ("w" . "wishlist.org"))))
 
 ;; Add a timestamp when closing items
 
