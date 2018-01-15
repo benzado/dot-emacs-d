@@ -19,4 +19,22 @@
 (autoload 'ibuffer "ibuffer")
 (global-set-key [remap list-buffers] 'ibuffer)
 
+;; Hat Tip: https://www.emacswiki.org/emacs/UnwrapLine
+
+(defun unwrap-line ()
+  "Remove all newlines until we get to two consecutive ones.
+    Or until we reach the end of the buffer.
+    Great for unwrapping quotes before sending them via email."
+  (interactive)
+  (let ((start (point))
+        (end (copy-marker (or (search-forward "\n\n" nil t)
+                              (point-max))))
+        (fill-column (point-max)))
+    (fill-region start end)
+    (goto-char start)))
+
+;; Let Shift-Meta-Q do the opposite of Meta-Q
+
+(global-set-key (kbd "M-Q") #'unwrap-line)
+
 (provide 'init-misc)
