@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Use Spotlight for searching
 
 (setq locate-command "mdfind")

@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Send mail using a SMTP, because I don't use Emacs on a mail server.
 
 (setq send-mail-function #'smtpmail-send-it)

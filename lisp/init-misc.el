@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Indent with spaces, not tabs.
 
 (setq-default indent-tabs-mode nil)

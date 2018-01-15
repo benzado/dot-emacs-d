@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; See README at https://github.com/alpha22jp/simplenote2.el
 
 (require 'simplenote2)

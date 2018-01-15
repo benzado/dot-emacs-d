@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Welcome to my Emacs init file. It lives at ~/.emacs.d/init.el.
 
 ;; Fail right away if Emacs is simply too old

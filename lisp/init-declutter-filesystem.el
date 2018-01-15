@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; To avoid cluttering the file system with #auto-save# files and
 ;; backup~ files, we'll direct Emacs to store those in the system
 ;; temporary directory. The auto-save-file-list (which stores the list

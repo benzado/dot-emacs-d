@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; Use MELPA to manage packages
 ;; M-x package-list-packages to browse and install
 
