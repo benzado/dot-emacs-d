@@ -4,6 +4,14 @@
 
 (setq-default indent-tabs-mode nil)
 
+;; Display the column number alongside the line number
+
+(setq-default column-number-mode t)
+
+;; I like the bar cursor
+
+(setq-default cursor-type 'bar)
+
 ;; Use Visual Line Mode when editing text
 
 (add-hook 'text-mode-hook #'turn-on-visual-line-mode)
