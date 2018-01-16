@@ -36,6 +36,7 @@
 (require 'init-simplenote)
 (require 'init-misc)
 (require 'init-neotree)
+(require 'init-ledger)
 
 (when *is-a-mac*
   (require 'init-macintosh))
