@@ -26,6 +26,7 @@
 (require 'init-elpa) ; calls (package-initialize)
 (require 'init-sendmail)
 (require 'init-declutter-filesystem)
+(require 'init-disabled)
 (require 'init-org)
 (require 'init-org-agenda)
 (require 'init-org-capture)
