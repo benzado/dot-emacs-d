@@ -49,5 +49,8 @@
 
 ;; This is what enables `emacsclient` to be used by git, etc.
 
+(when (equal window-system 'w32)
+  (setq server-use-tcp t))
+
 (when window-system
   (server-start))

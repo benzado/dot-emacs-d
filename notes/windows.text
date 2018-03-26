@@ -1,0 +1,42 @@
+Because I'm getting forgetful in my old age, here are notes about my
+setup on Windows.
+
+I have the native Windows version of Emacs installed at C:\Emacs.
+
+I set the Environment Variable HOME to be C:\Users\Benjamin, and so
+that is where Emacs looks for my init files.
+
+I have installed Windows Subsystem for Linux, with Debian on top of
+that. I downloaded Debain from the Microsoft App Store. It was weird.
+
+Inside WSL I have apt install'd `emacs25-bin-common` to get
+emacsclient (without all of Emacs and the graphical libraries that are
+pretty much useless inside WSL).
+
+When Emacs's `server-use-tcp` variable is set to true, and emacsclient
+is told to use the server file at ~/.emacs.d/server/server (I set
+EMACS_SERVER_FILE in ~/.profile), it works!
+
+Kinda.
+
+Unfortunately the pathnames that WSL understands are not the same as
+the pathnames that Emacs understands. If I use emacsclient to edit
+
+    /mnt/c/Users/Benjamin/foo.txt
+
+that means I want to edit
+
+    C:/Users/Benjamin/foo.txt
+
+but instead Emacs tries to write to
+
+    C:/mnt/c/Users/Benjamin/foo.txt
+
+and that's bad. Worse, files "inside" the WSL filesystem are not
+visible to Emacs. (Technically, they are inside a hidden folder, but
+Microsoft strongly discourages touching those files outside of WSL,
+because regular Windows might screw up file system metadata.)
+
+As a workaround, I wrote a wrapper script which translates paths
+outside the WSL filesystem and makes temporary copies of files inside
+WSL. It seems to work fairly well.
