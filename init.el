@@ -14,14 +14,20 @@
 
 (add-to-list 'load-path (locate-user-emacs-file "lisp"))
 
-;; Define a constant to indicate we're on a Mac
-
-(defconst *is-a-mac* (eq system-type 'darwin))
-
 ;; Direct the interactive 'customize' interface to make changes to a
 ;; separate file (and not mess around with this one).
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
+
+;; Operating-system specific init
+
+(when (eq system-type 'darwin)
+  (require 'init-system-darwin))
+
+(when (eq system-type 'windows-nt)
+  (require 'init-system-windows-nt))
+
+;; Now the standard stuff
 
 (require 'init-elpa) ; calls (package-initialize)
 (require 'init-sendmail)
@@ -38,9 +44,6 @@
 (require 'init-neotree)
 (require 'init-ledger)
 
-(when *is-a-mac*
-  (require 'init-macintosh))
-
 (require 'epa-file) ;; Gnu Privacy Guard
 
 ;; Load the customizations
@@ -49,8 +52,6 @@
 
 ;; This is what enables `emacsclient` to be used by git, etc.
 
-(when (equal window-system 'w32)
-  (setq server-use-tcp t))
-
 (when window-system
+  (setq server-use-tcp (eq window-system 'w32))
   (server-start))

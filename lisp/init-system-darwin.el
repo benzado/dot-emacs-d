@@ -71,4 +71,4 @@ window, otherwise, delete the entire frame."
 
 (setq ns-right-alternate-modifier nil)
 
-(provide 'init-macintosh)
+(provide 'init-system-darwin)
