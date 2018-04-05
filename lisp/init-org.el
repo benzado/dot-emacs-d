@@ -6,14 +6,6 @@
 
 (setq org-directory (expand-file-name "~/org"))
 
-(defvar my/org-plan-file
-  (expand-file-name "plan.org" org-directory)
-  "My main Org file.")
-
-(defvar my/org-template-directory
-  (expand-file-name "templates" org-directory)
-  "Directory with my Org template files.")
-
 ;; Use the standard key bindings
 
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -45,11 +37,13 @@
 
 ;; Where are we allowed to refile items?
 
-(defun my/org-refile-target-file-names ()
+(defun my/org-all-file-names ()
+  "Returns a list of all org files in the org-directory."
   (directory-files org-directory :full-names "\\.org$" :no-sort))
 
-(setq org-refile-targets '((nil :maxlevel . 3) ;; nil = current buffer
-			   (my/org-refile-target-file-names :level . 1)))
+(setq org-refile-targets
+      '((nil :maxlevel . 3) ;; nil = current buffer
+        (my/org-all-file-names :level . 1)))
 
 ;; Along with TODO and DONE, define a NEXT state, so that you can
 ;; easily mark tasks that you plan to do in the near future (today).
@@ -58,9 +52,9 @@
       '((sequence "WAIT" "TODO" "NEXT" "|" "DONE")))
 
 (setq org-todo-keyword-faces
-      '(("TODO" . "darkred")
-        ("WAIT" . "darkblue")
-        ("NEXT" . org-warning) ; NEXT should pop!
+      '(("WAIT" . "darkblue")
+        ("TODO" . "darkred")
+        ("NEXT" . "red")
 	("DONE" . "darkgreen")))
 
 ;; Here's a custom function (courtesy https://stackoverflow.com/a/27043756)
@@ -73,34 +67,24 @@
            (length
             (org-map-entries
              (lambda ()
-               (org-archive-subtree)
-               (setq org-map-continue-from (outline-previous-heading)))
+               (setq org-map-continue-from (point))
+               (org-archive-subtree))
              "/DONE"
              'file))))
 
-;; Here's a function to refile to a specified file and headline. The
-;; third parameter to org-refile is a weird, poorly documented form.
-;; https://emacs.stackexchange.com/q/8045
+;; Change all NEXT items back to TODO.
 
-(defun my/org-refile-to (file-name headline)
-  "Refile the headline at the point to the specified FILE-NAME and HEADLINE."
-  (org-refile nil nil (list
-		       headline
-		       file-name
-		       nil ;; regexp, unused
-		       (marker-position
-			(org-find-olp (list file-name headline))))))
+(defun my/org-reset-next-tasks ()
+  "Change all items with NEXT status back to TODO."
+  (interactive)
+  (message "Reset %d tasks."
+           (length
+            (org-map-entries
+             '(org-todo "TODO")
+             "/NEXT"
+             'file))))
 
-(defun my/org-copy-recurring (template-tag target-headline)
-  "Copy items with TEMPLATE-TAG from the recurring.org template file to
-TARGET-HEADLINE in the plan.org file."
-  (let ((org-refile-keep t))
-    (org-map-entries
-     (lambda () (my/org-refile-to my/org-plan-file target-headline))
-     (concat template-tag "/TODO")
-     (list (expand-file-name "recurring.org" my/org-template-directory)))))
-
-(defun my/org-consume-property (property-name scope func)
+(defun my/org-consume-property (property-name func scope)
   "Call FUNC at each headline with a value for PROPERTY-NAME in
 SCOPE. After FUNC is called, the property is removed and the
 properties drawer will also be removed if it is empty."
@@ -117,31 +101,41 @@ properties drawer will also be removed if it is empty."
   "Find TODO items with a `deadline_day` or `scheduled_day`
 property, and set a DEADLINE or SCHEDULED date on that day in the
 current year and month."
-  (let ((yyyy-mm- (format-time-string "%Y-%m-"))
-        (file-list (list my/org-plan-file)))
+  (let ((year-month (format-time-string "%Y-%m-")))
     (my/org-consume-property "deadline_day"
-                             file-list
                              (lambda (day)
-                               (org-deadline nil (concat yyyy-mm- day))))
+                               (org-deadline nil (concat year-month day)))
+                             'file)
     (my/org-consume-property "scheduled_day"
-                             file-list
                              (lambda (day)
-                               (org-schedule nil (concat yyyy-mm- day))))))
+                               (org-schedule nil (concat year-month day)))
+                             'file)))
+
+(defvar my/org-template-directory
+  (expand-file-name "templates" org-directory)
+  "Directory with my Org template files.")
+
+(defun my/org-append-template (file-name outline-path)
+  "Insert contents of FILE-NAME under the headline specified by OUTLINE-PATH."
+  (goto-char (org-find-olp outline-path :current-buffer))
+  (org-get-next-sibling)
+  (insert-file-contents (expand-file-name file-name
+                                          my/org-template-directory)))
 
 (defun my/org-copy-daily ()
   "Copy daily recurring tasks into plan.org."
   (interactive)
-  (my/org-copy-recurring "daily" "Today"))
+  (my/org-append-template "daily.org" '("Today")))
 
 (defun my/org-copy-weekly ()
   "Copy weekly recurring tasks into plan.org."
   (interactive)
-  (my/org-copy-recurring "weekly" "This Week"))
+  (my/org-append-template "weekly.org" '("This Week")))
 
 (defun my/org-copy-monthly ()
   "Copy monthly recurring tasks into plan.org, setting deadlines as needed."
   (interactive)
-  (my/org-copy-recurring "monthly" "This Month")
+  (my/org-append-template "monthly.org" '("This Month"))
   (my/org-set-dates))
 
 (provide 'init-org)
