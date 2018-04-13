@@ -14,50 +14,55 @@
 # them back.
 
 # KNOWN ISSUES
-
+#
 # This works for `git commit`, but if the repo is inside the WSL
 # environment, magit won't be able to find it, and will immediately
 # quit emacsclient with an error.
-
+#
 # Pathnames with spaces probably break this thing.
 
-# My Windows username is hardcoded in the TMPDIR, because it needs to
-# be a directory under /mnt/c/.
+# We assume that Emacs can read and write files wherever
+# EMACS_SERVER_FILE is located.
 
-TMPDIR=/mnt/c/Users/Benjamin/tmp
+if [[ ! -v EMACS_SERVER_FILE ]]; then
+    echo "fatal: EMACS_SERVER_FILE is not set!"
+    exit 1
+fi
 
-declare -A TMP_FILES=()
+TMPDIR=$(dirname $EMACS_SERVER_FILE)
+
+# ARGS is an array of the arguments to emacsclient. TMP_FILES is a map
+# where the key is WSL path to the file, and the value is the path to
+# a temporary copy that is visible outside of WSL.
+
 declare -a ARGS=()
+declare -A TMP_FILES=()
 
-mkdir -p $TMPDIR
+option_pattern="^[-+]"
+windows_path_pattern="^/mnt/[a-z]/"
 
 while [[ $# > 0 ]]; do
-    case $1 in
-	-* | +*)
-	    ARGS+=($1)
-	    ;;
-	/mnt/?/*)
-	    rp=$(realpath $1)
+    if [[ $1 =~ $option_pattern ]]; then
+        ARGS+=($1)
+    else
+        rp=$(realpath $1)
+        if [[ $rp =~ $windows_path_pattern ]]; then
 	    wp="${rp:5:1}:${rp:6}"
-	    ARGS+=($wp)
-	    ;;
-	*)
-            bn=$(basename $1)
-            td=$(mktemp -p $TMPDIR --directory)
-	    rp="${td}/${bn}"
-	    cp -v $1 $rp
-	    TMP_FILES[$1]=$rp
-	    wp="${rp:5:1}:${rp:6}"
-	    ARGS+=($wp)
-	    ;;
-    esac
+        else
+            tp="$(mktemp -p $TMPDIR --directory)/$(basename $rp)"
+            cp -v $rp $tp
+            TMP_FILES[$rp]=$tp
+            wp="${tp:5:1}:${tp:6}"
+        fi
+        ARGS+=($wp)
+    fi
     shift
 done
 
 emacsclient ${ARGS[@]}
 
-for wp in ${!TMP_FILES[@]}; do
-    tp=${TMP_FILES[$wp]}
-    cp -v $tp $wp
+for rp in ${!TMP_FILES[@]}; do
+    tp=${TMP_FILES[$rp]}
+    cp -v $tp $rp
     rm -v -r $(dirname $tp)
 done
