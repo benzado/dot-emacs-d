@@ -42,8 +42,6 @@
 (require 'init-org-capture)
 (require 'init-org-mobile)
 (require 'init-magit)
-(require 'init-twitter)
-(require 'init-simplenote)
 (require 'init-misc)
 (require 'init-neotree)
 (require 'init-ledger)
