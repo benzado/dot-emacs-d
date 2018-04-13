@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(package-install 'magit)
+
 (require 'magit)
 
 (global-set-key (kbd "C-x g") #'magit-status)

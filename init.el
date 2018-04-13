@@ -19,6 +19,10 @@
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
+;; Load the customizations
+
+(load custom-file :no-error)
+
 ;; Operating-system specific init
 
 (when (eq system-type 'darwin)
@@ -46,9 +50,10 @@
 
 (require 'epa-file) ;; Gnu Privacy Guard
 
-;; Load the customizations
+;; More packages to install
 
-(load custom-file)
+(package-install 'ansible-vault)
+(package-install 'yaml-mode)
 
 ;; This is what enables `emacsclient` to be used by git, etc.
 

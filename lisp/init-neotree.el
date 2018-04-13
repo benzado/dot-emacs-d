@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+(package-install 'neotree)
+
 (require 'neotree)
 
 ;; https://github.com/jaypei/emacs-neotree

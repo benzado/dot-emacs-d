@@ -24,4 +24,8 @@
 
 (package-initialize)
 
+(unless package-activated-list
+  (message "Looks like a fresh install; refreshing available packages.")
+  (package-refresh-contents))
+
 (provide 'init-elpa)
