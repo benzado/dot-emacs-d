@@ -6,7 +6,7 @@
 
 (let ((min-version "25.2"))
   (when (version< emacs-version min-version)
-    (error "This Emacs (%s) is too old! Upgrade to %s or newer."
+    (error "This Emacs (%s) is too old! Upgrade to %s or newer"
 	   emacs-version
 	   min-version)))
 
