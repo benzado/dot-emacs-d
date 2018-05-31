@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'init-org)
+(require 'init-dropbox)
 (require 'org-mobile)
 
 ;; MobileOrg: Org Mode on the go!
@@ -8,7 +9,8 @@
 ;; I'm currently using Dropbox to synchronize these files, and I'm
 ;; slightly paranoid, so I encrypt them.
 
-(setq org-mobile-directory (expand-file-name "~/Dropbox/Apps/MobileOrg"))
+(setq org-mobile-directory
+      (expand-file-name "Apps/MobileOrg" dropbox-directory))
 
 (setq org-mobile-use-encryption t)
 
