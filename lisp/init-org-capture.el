@@ -14,18 +14,28 @@
                     org-directory))
 
 (setq org-capture-templates
-      '(("t" "Task (inbox)" entry (file "inbox.org")
+      '(("t" "TODO to inbox"
+         entry (file "inbox.org")
          "* TODO %?%i")
-        ("T" "Task (Today)" entry (file+olp my/org-plan-file "Today")
-         "* NEXT %?%i")
-        ("l" "Task with link (Inbox)" entry (file "inbox.org")
+        ("l" "TODO with link to inbox"
+         entry (file "inbox.org")
          "* TODO %?%i\n  %a")
-        ("wl" "Wishlist Link" entry (file+olp "wishlist.org" "Unsorted")
+        ("w" "link to add to wishlist"
+         entry (file+olp "wishlist.org" "Unsorted")
          "* [[%^{Link}][%^{Title}]]")
-        ("j" "Journal" entry (file my/journal-file-name)
+        ("j" "personal journal entry"
+         entry (file my/journal-file-name)
          "* %<%A, %B %_d, %Y; %_I:%M%P>\n\n%i%?"
          :empty-lines 1
-         :kill-buffer)))
+         :kill-buffer)
+        ("F" "news to share with family"
+         entry (file "news-family.org")
+         "* %<%A, %B %_d, %Y; %_I:%M%P>\n\n%i%?"
+         :empty-lines 1)
+        ("L" "news to share with LogCheck"
+         entry (file "news-logcheck.org")
+         "* %<%A, %B %_d, %Y; %_I:%M%P>\n\n%i%?"
+         :empty-lines 1)))
 
 ;; Bind keys for quick access to some templates
 
