@@ -11,7 +11,8 @@
       (let ((default-directory org-directory))
         (list (expand-file-name "plan.org")
               (expand-file-name "calendar.org")
-              (expand-file-name "inbox.org"))))
+              (expand-file-name "inbox.org")
+              (expand-file-name "someday.org"))))
 
 ;; Since you're using NEXT to identify tasks you plan to handle next,
 ;; let's define a custom command to quickly view them all. (And do the
