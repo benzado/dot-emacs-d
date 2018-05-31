@@ -58,3 +58,5 @@
 (when window-system
   (setq server-use-tcp (eq window-system 'w32))
   (server-start))
+
+(message "Emacs init completed in %s." (emacs-uptime))
