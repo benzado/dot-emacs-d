@@ -1,0 +1,37 @@
+Windows Registry Editor Version 5.00
+
+; This file is based on information from:
+; https://www.dosbox.com/wiki/Associating_the_Configuration_File_in_Windows
+
+; Note that the path to DOSBox.exe appears in several places, and
+; needs to be updated if the executable is moved.
+
+[HKEY_CLASSES_ROOT\.dosbox]
+@="DOSBox"
+; This setting gives you stuff like "Edit" on the contextual menu.
+"PerceivedType"="text"
+
+[HKEY_CLASSES_ROOT\DOSBox]
+@="DOSBox DOS Emulator"
+
+[HKEY_CLASSES_ROOT\DOSBox\DefaultIcon]
+@="C:\\Program Files (x86)\\DOSBox-0.74\\DOSBox.exe,0"
+
+[HKEY_CLASSES_ROOT\DOSBox\shell]
+
+[HKEY_CLASSES_ROOT\DOSBox\shell\open]
+
+[HKEY_CLASSES_ROOT\DOSBox\shell\open\command]
+@="\"C:\\Program Files (x86)\\DOSBox-0.74\\DOSBox.exe\" -conf \"%1\""
+
+[HKEY_CLASSES_ROOT\DOSBox\shell\run]
+@="Run"
+
+[HKEY_CLASSES_ROOT\DOSBox\shell\run\command]
+@="\"C:\\Program Files (x86)\\DOSBox-0.74\\DOSBox.exe\" -conf \"%1\""
+
+[HKEY_CLASSES_ROOT\DOSBox\shell\runfullscreen]
+@="Run full screen"
+
+[HKEY_CLASSES_ROOT\DOSBox\shell\runfullscreen\command]
+@="\"C:\\Program Files (x86)\\DOSBox-0.74\\DOSBox.exe\" -fullscreen -conf \"%1\""

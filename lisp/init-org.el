@@ -2,6 +2,12 @@
 
 (require 'org)
 
+(let ((min-org-version "9.1"))
+  (when (version< org-version min-org-version)
+    (error "This org package (%s) is too old! Upgrade to %s or newer"
+           org-version
+           min-org-version)))
+
 ;; Keep your org files in a dedicated directory
 
 (setq org-directory (expand-file-name "~/org"))

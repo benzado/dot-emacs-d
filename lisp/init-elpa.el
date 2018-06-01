@@ -10,15 +10,17 @@
 		      (not (gnutls-available-p))))
        (proto (if no-https "http:" "https:")))
   (setq package-archives
-	`(("gnu" . ,(concat proto "//elpa.gnu.org/packages/"))
-	  ("melpa" . ,(concat proto "//melpa.org/packages/")))))
+	`(("org" . ,(concat proto "//orgmode.org/elpa/"))
+	  ("gnu" . ,(concat proto "//elpa.gnu.org/packages/"))
+          ("melpa" . ,(concat proto "//melpa.org/packages/")))))
 
 ;; If a package exists in multiple repositories, the one with the
 ;; highest priority is used, even if it is an older version.
 
 (setq package-archive-priorities
-      '(("gnu" . 1)
-	("melpa" . 0)))
+      '(("org" . 2)
+	("gnu" . 1)
+        ("melpa" . 0)))
 
 (setq package-enable-at-startup nil) ; don't autoload
 
