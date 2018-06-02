@@ -1,5 +1,6 @@
 ;; -*- lexical-binding: t; -*-
 
+;; M-x package-refresh-contents to download the latest package lists.
 ;; M-x package-list-packages to browse and install
 
 (require 'package)
