@@ -19,7 +19,7 @@
 ;; same for WAIT items, too.)
 
 (setq org-agenda-custom-commands
-      `(("x" "Ne[x]t actions, agenda, and waiting-for" ((todo "NEXT")
+      '(("x" "Ne[x]t actions, agenda, and waiting-for" ((todo "NEXT")
                                                         (agenda)
                                                         (todo "WAIT")))
         ("X" "What's ne[X]t?" ((todo "NEXT")))
